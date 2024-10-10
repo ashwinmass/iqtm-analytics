@@ -28,7 +28,7 @@ def get_location():
         # response = requests.get(f"https://ipinfo.io/{ip_address}/json")
         # data = response.json()
         # return data.get("country", "Unknown"), data.get("city", "Unknown")
-        return in_address
+        return ip_address
     except Exception as e:
         print(f"Error fetching location: {e}")
         return "Unknown", "Unknown"
