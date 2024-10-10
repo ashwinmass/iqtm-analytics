@@ -28,7 +28,7 @@ def get_my_ip():
 @app.route('/')
 def get_location():
     try:
-        ip_address= request.remote_addr 
+        ip_address= request.environ['REMOTE_ADDR']
         response = requests.get(f"https://ipinfo.io/{ip_address}/json")
         data = response.json()
         return data.get("country", "Unknown")
