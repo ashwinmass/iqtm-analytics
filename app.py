@@ -22,7 +22,7 @@ db_config = {
 
 @app.route("/get_my_ip", methods=["GET"])
 def get_my_ip():
-    return jsonify({'ip': request.remote_addr}), 200
+    return jsonify({'ip': request.environ['REMOTE_ADDR']}), 200
 
 # Function to get country and city from IP
 @app.route('/')
