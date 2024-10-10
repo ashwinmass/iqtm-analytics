@@ -20,6 +20,10 @@ db_config = {
 #     conn = mysql.connector.connect(**db_config)
 #     return conn
 
+@app.route("/get_my_ip", methods=["GET"])
+def get_my_ip():
+    return jsonify({'ip': request.remote_addr}), 200
+
 # Function to get country and city from IP
 @app.route('/')
 def get_location():
