@@ -25,13 +25,12 @@ db_config = {
 def get_location():
     try:
         ip_address= request.remote_addr 
-        # response = requests.get(f"https://ipinfo.io/{ip_address}/json")
-        # data = response.json()
-        # return data.get("country", "Unknown"), data.get("city", "Unknown")
-        return ip_address
+        response = requests.get(f"https://ipinfo.io/{ip_address}/json")
+        data = response.json()
+        return data.get("country", "Unknown")
     except Exception as e:
         print(f"Error fetching location: {e}")
-        return "Unknown", "Unknown"
+        return "Unknown"
 
 # Insert a new row for each tracking event
 # def insert_user_tracking(
