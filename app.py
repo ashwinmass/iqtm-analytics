@@ -21,14 +21,14 @@ def get_db_connection():
     return conn
 
 # Function to get country and city from IP
-def get_location(ip_address):
-    try:
-        response = requests.get(f"https://ipinfo.io/{ip_address}/json")
-        data = response.json()
-        return data.get("country", "Unknown"), data.get("city", "Unknown")
-    except Exception as e:
-        print(f"Error fetching location: {e}")
-        return "Unknown", "Unknown"
+# def get_location(ip_address):
+#     try:
+#         response = requests.get(f"https://ipinfo.io/{ip_address}/json")
+#         data = response.json()
+#         return data.get("country", "Unknown"), data.get("city", "Unknown")
+#     except Exception as e:
+#         print(f"Error fetching location: {e}")
+#         return "Unknown", "Unknown"
 
 # Insert a new row for each tracking event
 def insert_user_tracking(
@@ -70,6 +70,10 @@ def insert_user_tracking(
     cursor.close()
     conn.close()
 
+@app.route('/', methods=['GET'])
+def server_info():
+    return jsonify({"status": "server is up and running"}), 200
+
 # Function to track user activity and additional data points
 @app.route('/track', methods=['POST'])
 def track_visitor():
@@ -102,7 +106,7 @@ def track_visitor():
         hovers = data.get('hovers', 0)                  # Hovers
     
         # Get location based on IP address
-        country, city = get_location(ip_address)
+        # country, city = get_location(ip_address)
     
         # Additional data points
         screen_resolution = data.get('screenResolution', 'Unknown')  # Screen resolution
@@ -133,7 +137,6 @@ def track_visitor():
         )
     
         return jsonify({"status": "success", "received_data": data}), 200
-
     except Exception as e:
        print(f"Error tracking visitor: {e}")
        return jsonify({"messase": "INTERNAL SERVER ERROR"}), 500
