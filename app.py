@@ -5,7 +5,6 @@ from pymongo.server_api import ServerApi
 from datetime import datetime
 import os
 from dotenv import load_dotenv
-from bson.json_util import dumps 
 
 # Load environment variables from .env file
 load_dotenv()
@@ -100,16 +99,19 @@ def track_visitor():
         return jsonify({"message": "INTERNAL SERVER ERROR"}), 500
 
 @app.route('/trackings', methods=['GET'])
-def get_Trackings(): 
+def get_Trackings():
     try:
         # Retrieve all documents from the "User_Trackings" collection
         trackings = IQTM_USER_TRACKINGS_COLL.find()
 
-        # Convert the cursor to a list and return as JSON
-        tracking_list = list(trackings)
-        
-        # Use bson.json_util.dumps to convert BSON to JSON format
-        return jsonify({"status": "success", "data": dumps(tracking_list)}), 200
+        # Convert the cursor to a list and manually convert BSON types to JSON-compatible types
+        tracking_list = []
+        for tracking in trackings:
+            tracking['_id'] = str(tracking['_id'])  # Convert ObjectId to string
+            tracking['timestamp'] = tracking['timestamp'].isoformat()  # Convert datetime to ISO format
+            tracking_list.append(tracking)
+
+        return jsonify({"status": "success", "data": tracking_list}), 200
     except Exception as e:
         print(f"Error retrieving trackings: {e}")
         return jsonify({"status": "error", "message": "Unable to retrieve trackings"}), 500
