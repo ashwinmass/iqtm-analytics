@@ -98,5 +98,3 @@ def track_visitor():
         print(f"Error tracking visitor: {e}")
         return jsonify({"message": "INTERNAL SERVER ERROR"}), 500
 
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
