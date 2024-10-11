@@ -73,6 +73,7 @@ def insert_user_tracking(
 # Function to track user activity and additional data points
 @app.route('/track', methods=['POST'])
 def track_visitor():
+    try:
     # Check for correct content type
     if request.content_type != 'application/json':
         return jsonify({"status": "error", "message": "Invalid content type. Expected application/json"}), 415
@@ -132,3 +133,7 @@ def track_visitor():
     )
 
     return jsonify({"status": "success", "received_data": data}), 200
+
+    except Exception as e:
+       print(f"Error tracking visitor: {e}")
+       return jsonify({"messase": "INTERNAL SERVER ERROR"}), 500
