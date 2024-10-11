@@ -10,7 +10,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 app = Flask(__name__)
-CORS(app, resources={r"/track": {"origins": "*"}})  # Explicitly allow all origins for /track route
+CORS(app, resources={r"/track": {"origins": "*"}, r"/trackings": {"origins": "*"}})  # Explicitly allow all origins for /track route
 
 # Get MongoDB connection URI from environment variable
 MONGO_URI = os.getenv("MONGO_URI")
