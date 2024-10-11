@@ -74,65 +74,65 @@ def insert_user_tracking(
 @app.route('/track', methods=['POST'])
 def track_visitor():
     try:
-    # Check for correct content type
-    if request.content_type != 'application/json':
-        return jsonify({"status": "error", "message": "Invalid content type. Expected application/json"}), 415
-
-    data = request.get_json()
-
-    if data is None:
-        return jsonify({"status": "error", "message": "No data received"}), 400
-
-    print(f"Received data: {data}")
-
-    # Extract relevant fields
-    user_id = data.get('userId')
-    time_spent = data.get('timeSpent', 0)
-    session_duration = data.get('sessionDuration', 0)  # New field for session duration
-    event = data.get('event')
-
-    # Additional data points
-    user_agent = request.headers.get('User-Agent')   # Browser details
-    referrer = request.referrer                      # Referrer URL
-    ip_address = request.remote_addr                 # IP address
-    clicks = data.get('clicks', 0)                  # Clicks
-    submissions = data.get('submissions', 0)        # Form submissions
-    scrolls = data.get('scrolls', 0)                # Scrolls
-    video_plays = data.get('video_plays', 0)        # Video plays
-    hovers = data.get('hovers', 0)                  # Hovers
-
-    # Get location based on IP address
-    country, city = get_location(ip_address)
-
-    # Additional data points
-    screen_resolution = data.get('screenResolution', 'Unknown')  # Screen resolution
-    scroll_depth = data.get('scrollDepth', 0)       # Scroll depth
-    session_id = data.get('sessionId', None)        # Session ID
-    page_url = data.get('page_url', 'Unknown')      # Page URL
-    device_type = data.get('device_type', 'Unknown')  # Device type
-    operating_system = data.get('operating_system', 'Unknown')  # Operating system
-    browser_info = data.get('browser_info', 'Unknown')  # Browser info
-    referring_domain = data.get('referring_domain', 'Unknown')  # Referring domain
-    utm_source = data.get('utm_source', 'Unknown')    # UTM source
-    utm_medium = data.get('utm_medium', 'Unknown')    # UTM medium
-    utm_campaign = data.get('utm_campaign', 'Unknown')  # UTM campaign
-    click_path = ','.join(data.get('click_path', []))  # Click path
-    error_logs = data.get('error_logs', '')  # Error logs
-
-    # Current timestamp
-    timestamp = datetime.now()
-
-    # Insert user tracking information as a new entry
-    insert_user_tracking(
-        user_id, time_spent, session_duration, event, user_agent, referrer,
-        ip_address, clicks, submissions, scrolls, video_plays, hovers,
-        country, city, screen_resolution, scroll_depth, session_id,
-        timestamp, page_url, device_type, operating_system,
-        browser_info, referring_domain, utm_source, utm_medium,
-        utm_campaign, click_path, error_logs
-    )
-
-    return jsonify({"status": "success", "received_data": data}), 200
+        # Check for correct content type
+        if request.content_type != 'application/json':
+            return jsonify({"status": "error", "message": "Invalid content type. Expected application/json"}), 415
+    
+        data = request.get_json()
+    
+        if data is None:
+            return jsonify({"status": "error", "message": "No data received"}), 400
+    
+        print(f"Received data: {data}")
+    
+        # Extract relevant fields
+        user_id = data.get('userId')
+        time_spent = data.get('timeSpent', 0)
+        session_duration = data.get('sessionDuration', 0)  # New field for session duration
+        event = data.get('event')
+    
+        # Additional data points
+        user_agent = request.headers.get('User-Agent')   # Browser details
+        referrer = request.referrer                      # Referrer URL
+        ip_address = request.remote_addr                 # IP address
+        clicks = data.get('clicks', 0)                  # Clicks
+        submissions = data.get('submissions', 0)        # Form submissions
+        scrolls = data.get('scrolls', 0)                # Scrolls
+        video_plays = data.get('video_plays', 0)        # Video plays
+        hovers = data.get('hovers', 0)                  # Hovers
+    
+        # Get location based on IP address
+        country, city = get_location(ip_address)
+    
+        # Additional data points
+        screen_resolution = data.get('screenResolution', 'Unknown')  # Screen resolution
+        scroll_depth = data.get('scrollDepth', 0)       # Scroll depth
+        session_id = data.get('sessionId', None)        # Session ID
+        page_url = data.get('page_url', 'Unknown')      # Page URL
+        device_type = data.get('device_type', 'Unknown')  # Device type
+        operating_system = data.get('operating_system', 'Unknown')  # Operating system
+        browser_info = data.get('browser_info', 'Unknown')  # Browser info
+        referring_domain = data.get('referring_domain', 'Unknown')  # Referring domain
+        utm_source = data.get('utm_source', 'Unknown')    # UTM source
+        utm_medium = data.get('utm_medium', 'Unknown')    # UTM medium
+        utm_campaign = data.get('utm_campaign', 'Unknown')  # UTM campaign
+        click_path = ','.join(data.get('click_path', []))  # Click path
+        error_logs = data.get('error_logs', '')  # Error logs
+    
+        # Current timestamp
+        timestamp = datetime.now()
+    
+        # Insert user tracking information as a new entry
+        insert_user_tracking(
+            user_id, time_spent, session_duration, event, user_agent, referrer,
+            ip_address, clicks, submissions, scrolls, video_plays, hovers,
+            country, city, screen_resolution, scroll_depth, session_id,
+            timestamp, page_url, device_type, operating_system,
+            browser_info, referring_domain, utm_source, utm_medium,
+            utm_campaign, click_path, error_logs
+        )
+    
+        return jsonify({"status": "success", "received_data": data}), 200
 
     except Exception as e:
        print(f"Error tracking visitor: {e}")
